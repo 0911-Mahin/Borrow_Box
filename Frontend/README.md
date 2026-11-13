@@ -20,13 +20,15 @@ The app starts empty: everything is entered by the user.
 2. **Browse** and open an item, then **Request item** with your details and a due date (pick a past date to see an overdue item).
 3. In **Loans** or the item page: view holder and due date, **Generate polite reminder**, and **Mark as returned**.
 
-Frontend only: no backend, login or API keys. Data is saved in the browser's localStorage; "Clear all data" resets it.
+Frontend only: no backend, login or API keys. Borrowed-item records and profile data are saved in localStorage; unfinished form entries are saved in sessionStorage for the current tab and restored after a refresh. "Clear all data" resets the saved app records.
 
 ## Landing-page experience
 - Cursor-following ambient lighting, subtle card tilt and magnetic call-to-action buttons on desktop pointers.
 - Interactive lending-cycle explorer, clickable category photography, animated live counts and step-by-step process cards.
 - Flip-to-read privacy promises, tone-switchable reminder preview with copy action, and expandable FAQs.
 - Responsive layouts and reduced-motion support.
+- Option changes update only the relevant UI component, avoiding full content redraws; forms preserve session drafts through refreshes.
+- The lending-cycle marker can be dragged and snaps to a stage only after a deliberate movement threshold, with spring-like release motion.
 - Item categories use real editorial photographs served from the Unsplash image CDN; an internet connection is needed for the photographs. Interface pictograms use consistent inline SVGs rather than emoji glyphs.
 
 ## Twist: Gentle overdue mode
