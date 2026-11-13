@@ -118,9 +118,14 @@ const ICON_PATHS = {
   plus: '<path d="M12 5v14M5 12h14"/>',
   list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
   chevron: '<path d="m9 18 6-6-6-6"/>',
+  calculator: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h2m4 0h2M8 15h2m4 0h2M8 19h2m4 0h2"/>',
+  plug: '<path d="M9 7V3m6 4V3M6 7h12v4a6 6 0 0 1-6 6 6 6 0 0 1-6-6V7Zm6 10v4"/>',
+  shirt: '<path d="m8 4 4 2 4-2 5 4-3 4-2-2v12H8V10l-2 2-3-4 5-4Z"/>',
 };
 const icon = (name, cls = '') => `<svg class="ui-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name] || ICON_PATHS.box}</svg>`;
 const categoryImage = (category, cls = 'category-image') => `<img class="${cls}" src="${CATEGORY_IMAGES[category] || CATEGORY_IMAGES.Other}" alt="${esc(category)} item category" loading="lazy" onerror="this.style.display='none'">`;
+const itemVisualMarkup = (item, cls = 'item-visual') => `<div class="${cls}" aria-hidden="true"><span class="item-visual-glow"></span><span class="item-visual-icon">${icon('box')}</span><span class="item-visual-mark">BORROWBOX ITEM</span></div>`;
+
 const LBL = { available: ['a', 'Available'], borrowed: ['l', 'Borrowed'], returned: ['r', 'Returned'], unavailable: ['n', 'Unavailable'] };
 const badge = (i, priv) => {
   if (priv && late(i)) return `<span class="b g">${icon('moon')} Gentle nudge · ${-days(i.due)}d past due</span>`;
@@ -132,7 +137,7 @@ const empty = (iconName, title, text, extra = '') =>
 
 const card = (i) => `
 <article class="card item" onclick="location.hash='item-${i.id}'" tabindex="0" role="link" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='item-${i.id}'}">
-  <div class="item-image-wrap">${categoryImage(i.cat, 'item-image')}<span class="image-label">${esc(i.cat)}</span></div>
+  <div class="item-visual-wrap">${itemVisualMarkup(i)}<span class="item-category-pill">${esc(i.cat)}</span></div>
   <div class="item-card-body"><h3>${esc(i.name)}</h3>
   <p class="mu">${esc(i.cat)} · ${esc(i.owner)}${i.block ? ', ' + esc(i.block) : ''}</p>
   ${badge(i, false)}</div>
@@ -149,6 +154,11 @@ const STAGES = [
   ['Available', 'Someone lists an item, like a calculator or extension board, and it shows as Available to the whole hostel.'],
   ['Borrowed', 'A hostel-mate requests it and picks a due date. Publicly it only says Borrowed, with no names and no dates. Only the owner and borrower see the details.'],
   ['Returned', 'The owner confirms the return. The item shows as Returned and can be made Available again in one tap.'],
+];
+const TIPS = [
+  'Public listings show only that an item is available — never who owns it or any private details.',
+  'Names, due dates and gentle overdue flags stay visible only to the owner and the current borrower.',
+  'The return is confirmed by the owner, and the item can safely re-enter the shared pool.',
 ];
 const HOME_STEPS = [
   ['Share something useful', 'Choose an item you no longer need every day. Add a category and a short note so neighbours know what they are borrowing.', 'list'],
@@ -304,7 +314,7 @@ function loanResults() {
       '<div class="cta c"><a class="btn" href="#browse">Browse items</a></div>');
   else body = `<div class="grid">${list.map((i) => `
 <article class="card item" onclick="location.hash='item-${i.id}'">
-  <div class="item-image-wrap loan-image">${categoryImage(i.cat, 'item-image')}</div><h3>${esc(i.name)}</h3>
+  <div class="item-visual-wrap loan-visual">${itemVisualMarkup(i)}</div><h3>${esc(i.name)}</h3>
   <p class="mu">${tab === 'lent' ? 'With ' + esc(i.borrower) : 'From ' + esc(i.owner)} · due ${fd(i.due)}</p>${badge(i, true)}</article>`).join('')}</div>`;
   return `${nudges && tab === 'lent' ? `<div class="soft">${icon('moon')} ${nudges} item${nudges > 1 ? 's are' : ' is'} a little overdue. Open it to send a gentle reminder.</div>` : ''}${body}`;
 }
@@ -360,7 +370,7 @@ function item(id) {
 <div class="two">
   <div class="card">
     ${inv && late(i) ? `<div class="soft">${icon('moon')} <b>Gentle nudge:</b> this was due on ${fd(i.due)}. ${own ? 'A friendly reminder might help.' : 'A quick return would be appreciated, or extend the date.'}<br><small>${icon('lock')} Only you and the ${own ? 'borrower' : 'owner'} can see this.</small></div>` : ''}
-    <div class="item-image-wrap detail-image">${categoryImage(i.cat, 'item-image')}</div>
+    <div class="item-visual-wrap detail-visual">${itemVisualMarkup(i)}</div>
     <h2>${esc(i.name)}</h2>
     <p>${badge(i, inv)} <span class="b p">${esc(i.cat)}</span></p>
     <p class="mu">Listed by ${esc(i.owner)}${i.block ? ' · ' + esc(i.block) : ''}</p>
@@ -378,8 +388,8 @@ function add() {
 <div class="ph"><div><h2>Lend an item</h2><p class="mu">Add something your hostel-mates can borrow</p></div></div>
 <div class="card form">
   <p class="mu" style="margin-bottom:6px">Quick picks</p>
-  <div class="chips" style="margin:0 0 6px">${QUICK.map(([n, c], k) => `<button class="chip" onclick="quick(${k})">${categoryImage(c, 'quick-pick-image')} ${n}</button>`).join('')}</div>
-  <label for="n">Item name *</label><input id="n" placeholder="e.g. Scientific calculator">
+  <div class="chips" style="margin:0 0 6px">${QUICK.map(([n, c], k) => `<button class="chip quick-pick" onclick="quick(${k})"><span class="quick-pick-icon">${icon(['calculator', 'plug', 'shirt'][k])}</span>${n}</button>`).join('')}</div>
+  <label for="n">Item name *</label><input id="n" placeholder="e.g. Pencil, calculator, lab coat" autocomplete="off">
   <div class="fg"><div><label for="c">Category</label><select id="c">${CATS.map((c) => `<option>${c}</option>`).join('')}</select></div>
   <div><label for="a">Availability</label><select id="a"><option value="available">Available now</option><option value="unavailable">Not available right now</option></select></div></div>
   <div class="fg"><div><label for="on">Your first name *</label><input id="on" placeholder="e.g. Meera" value="${esc(profile.name)}"></div>
@@ -604,6 +614,8 @@ function ren(keepFocus = false, keepScroll = false) {
   if (keepFocus) { const search = $('s'); if (search) { search.focus(); search.setSelectionRange(q.length, q.length); } }
   else if (!modal && !keepScroll) window.scrollTo(0, 0);
   if (r === 'home') bindHomeInteractions();
+  if (r === 'list') {
+    }
 }
 function bindHomeInteractions() {
   const root = $('homeRoot');
