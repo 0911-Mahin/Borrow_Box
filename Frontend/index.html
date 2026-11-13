@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>BorrowBox – Hostel lending, sorted</title>
+  <title>BorrowBox — Share more. Buy less.</title>
+  <meta name="description" content="BorrowBox is a thoughtful peer-to-peer lending board for hostel communities. Share essentials, borrow what you need and keep returns friendly.">
+  <meta name="theme-color" content="#fbfaf8">
   <meta name="color-scheme" content="light">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
   <header>
-    <nav>
-      <a class="logo" href="#home"><i>📦</i>BorrowBox</a>
+    <nav aria-label="Main navigation">
+      <a class="logo" href="#home"><img src="/favicon.svg" alt="">BorrowBox</a>
       <a class="l" href="#home" data-r="home">Home</a>
       <a class="l" href="#browse" data-r="browse">Browse</a>
       <a class="l" href="#loans" data-r="loans">My loans</a>
@@ -21,7 +23,7 @@
   <main id="app"></main>
   <footer><div id="clk" class="clk"></div>BorrowBox · a hostel lending prototype · runs fully in your browser · no contact details stored</footer>
   <div id="modal"></div>
-  <div id="toast" role="status"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

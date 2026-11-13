@@ -22,9 +22,19 @@ The app starts empty: everything is entered by the user.
 
 Frontend only: no backend, login or API keys. Data is saved in the browser's localStorage; "Clear all data" resets it.
 
+## Landing-page experience
+- Cursor-following ambient lighting, subtle card tilt and magnetic call-to-action buttons on desktop pointers.
+- Interactive lending-cycle explorer, clickable category photography, animated live counts and step-by-step process cards.
+- Flip-to-read privacy promises, tone-switchable reminder preview with copy action, and expandable FAQs.
+- Responsive layouts and reduced-motion support.
+- Item categories use real editorial photographs served from the Unsplash image CDN; an internet connection is needed for the photographs. Interface pictograms use consistent inline SVGs rather than emoji glyphs.
+
 ## Twist: Gentle overdue mode
 - Overdue items are flagged **privately** (owner and borrower only), never in public lists or cards.
 - Reminders are generated in 3 tones and contain **no phone numbers or contact details**; inputs containing phone/email patterns are rejected.
 - Lending cycle: Available → Borrowed → Returned (then Available again).
 - "Load sample essentials" adds calculators, extension boards, lab coats and more. Use the top-right "view as" name to see the owner/borrower views.
 - The footer "Demo date" buttons skip ahead in time so any item can become overdue.
+
+## Prototype limitations
+The "view as" name selector is a demo convenience, not authentication. The app is browser-only and data does not sync between devices or browsers.
