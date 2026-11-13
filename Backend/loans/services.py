@@ -7,11 +7,11 @@ from .models import Loan
 
 def request_loan(item, user):
     if item.owner == user:
-        raise ValidationError("You can't borrow your own item.")
+        raise ValidationError({"detail": "You can't borrow your own item."})
     if not item.is_available:
-        raise ValidationError("Item is currently lent out.")
+        raise ValidationError({"detail": "Item is currently lent out."})
     if Loan.objects.filter(item=item, borrower=user, status=Loan.REQUESTED).exists():
-        raise ValidationError("You already have a pending request for this item.")
+        raise ValidationError({"detail": "You already have a pending request for this item."})
     return Loan.objects.create(item=item, borrower=user)
 
 
@@ -19,7 +19,7 @@ def _check_lender_and_status(loan, user, required_status):
     if loan.item.owner != user:
         raise PermissionDenied("Only the lender can do this.")
     if loan.status != required_status:
-        raise ValidationError(f"Loan must be '{required_status}' (it is '{loan.status}').")
+        raise ValidationError({"detail": f"Loan must be '{required_status}' (it is '{loan.status}')."})
 
 
 @transaction.atomic
@@ -27,7 +27,7 @@ def approve_loan(loan, user):
     _check_lender_and_status(loan, user, Loan.REQUESTED)
     item = loan.item
     if not item.is_available:
-        raise ValidationError("Item is already lent out.")
+        raise ValidationError({"detail": "Item is already lent out."})
     loan.status = Loan.APPROVED
     loan.save()
     item.is_available = False
