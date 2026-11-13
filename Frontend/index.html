@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BorrowBox – Hostel lending, sorted</title>
+  <meta name="color-scheme" content="light">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="logo" href="#home"><i>📦</i>BorrowBox</a>
+      <a class="l" href="#home" data-r="home">Home</a>
+      <a class="l" href="#browse" data-r="browse">Browse</a>
+      <a class="l" href="#loans" data-r="loans">My loans</a>
+      <a class="l" href="#list" data-r="list">Lend an item</a>
+      <button id="who" class="who" onclick="openWho()"></button>
+    </nav>
+  </header>
+  <main id="app"></main>
+  <footer><div id="clk" class="clk"></div>BorrowBox · a hostel lending prototype · runs fully in your browser · no contact details stored</footer>
+  <div id="modal"></div>
+  <div id="toast" role="status"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
