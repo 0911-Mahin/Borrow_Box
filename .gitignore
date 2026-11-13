@@ -1,0 +1,50 @@
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Node.js and Vite
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+.venv/
+.tox/
+.nox/
+build/
+develop-eggs/
+*.dist-info/
+*.egg-info/
+.eggs/
+wheels/
+
+# Django local data and generated files
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# Test, coverage, and type-check caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Logs and local editor/OS files
+*.log
+.DS_Store
+.idea/
+.vscode/
